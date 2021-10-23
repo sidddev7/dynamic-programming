@@ -1,0 +1,105 @@
+/*
+	Problem Statment : 0-1 Knapsack 
+	
+	Explanation : You are given 2 array of weight and profit of an item and a knapsack(bag) which can carry some 
+				  amount of weight given in the question. Your task is to get maximun profit and take as many item
+				  as you can in the knapsack, but the catch here is either you can take whole item or leave it completely,,
+				  Moreover each items is processed ones i.e. you can take one item only ones.
+	
+	Input :
+		N = 3              1   2   3
+		Weight of Items : [10, 20, 30]
+		Profit of Items : [60, 100, 120]
+		Kanpsack Capacity : 50
+	
+	Output :
+		220 
+		
+	Explanation : you can pick 2 and 3 item which are having maximum profit which is 220.
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int dp[50][50];
+
+void init_dp(int n)
+{
+	for(int i=0;i<=n+1;i++)
+	{
+		for(int j=0;j<=n;j++)
+		{
+			dp[i][j]=-1;
+		}
+	}
+}
+
+int profit_01_knapsack(vector<int> &v,vector<int> &p,int wt,int pft,int curr)   // without DP
+{
+	if(wt==0)
+	{
+		return pft;
+	}
+	if(curr==0)
+	{
+		return 0;
+	}
+	if(v[curr]>wt)
+	{
+		return profit_01_knapsack(v,p,wt,pft,curr-1);
+	}
+	else
+	{
+		return max(profit_01_knapsack(v,p,wt-v[curr],pft+p[curr],curr-1),profit_01_knapsack(v,p,wt,pft,curr-1));
+	}
+}
+
+int profit_01_knapsack_with_dp(vector<int> &v,vector<int> &p,int wt,int pft,int curr)   // without DP
+{
+	if(wt==0)
+	{
+		return pft;
+	}
+	if(curr==0)
+	{
+		return 0;
+	}
+	if(dp[wt][curr]!=-1)
+	{
+		return dp[wt][curr];
+	}
+	else
+	{		
+		if(v[curr]>wt)
+		{
+			dp[wt][curr]=profit_01_knapsack(v,p,wt,pft,curr-1);
+			return dp[wt][curr];
+		}
+		else
+		{
+			dp[wt][curr]=max(profit_01_knapsack(v,p,wt-v[curr],pft+p[curr],curr-1),profit_01_knapsack(v,p,wt,pft,curr-1));
+			return dp[wt][curr];
+		}		
+	}
+}
+
+int main()
+{
+	int n;
+	cin>>n;
+	vector<int> w(n+1); // for 1 indexing .
+	vector<int> p(n+1);
+	for(int i=1;i<=n;i++)
+	{
+		cin>>w[i];
+	}
+	for(int i=1;i<=n;i++)
+	{
+		cin>>p[i];
+	}
+	int wt;
+	cin>>wt;
+	init_dp(n);
+	cout<<profit_01_knapsack_with_dp(w,p,wt,0,n);
+	return 0;
+}
