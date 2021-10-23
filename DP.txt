@@ -1,0 +1,8 @@
+-> Always Try to use 1-indexing when ever using DP
+-> Whenver you need to print the something for example in count subset sum problem you want to print the possible subset,, than don't try DP approch write the simple recursion approach because in DP-Matrix we don't store the string,, in other words DP matrix return directly when solution is found without printing anything.
+
+1) the very first step is to think the recursive solution, than to memoize it and than try the bottom up solution.
+2) the dp array or matrix is made from the variable which are changing during the recursive call for example if only one variable is changing than we need to creare a 1D array and if 2 variables are changing than we need to create a 2D matrix .
+3) for converting the recursive solution i.e (top-down solution) to bottom up i.e (DP solution) we need to do the following steps :
+	1) the base case of the recursive solution will be the initialization step of bottomup solution.
+	2) all the recursive call will be replaced by the matrix or array of the dp with changing variable as index of the dp matrix or array.
