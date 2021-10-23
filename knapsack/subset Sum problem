@@ -1,0 +1,131 @@
+/*
+  Mother Problem : 0-1 Knapsack
+
+    Problem Statement : Subet Sum Problem
+    Given and array you need to find a subset into and array whoes sum is equal to the sum given in the question .
+	
+	Explanation Link : https://www.youtube.com/watch?v=_gPcYovP7wc&list=PL_z_8CaSLPWekqhdCPmFohncHwz8TY2Go&index=8
+    
+	Input 1: 
+      N=5
+      Array=[2,3,7,8,10]
+      sum=5
+    
+    Output : 
+      Yes // subset can be of [2,3]
+
+    
+    Input 2:
+      N=5
+      Array=[2,3,7,8,10]
+      sum=14
+
+    Output :
+      No    
+
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int dp[100][100]; 
+
+
+bool isposs(vector<int> &v,int sum,int curr)  // this is recursive code
+{
+  // here we can see there are multiple calls of same sub-function
+  if(sum==0)
+  {
+    return 1;
+  }
+  if(curr==0)
+  {
+    return 0;
+  }
+  if(v[curr]>sum)
+  {
+    return isposs(v,sum,curr-1);
+  }
+  return isposs(v,sum-v[curr],curr-1) || isposs(v,sum,curr-1);
+}
+
+bool isposs_with_memoization(vector<int> &v,int sum,int curr)  // this is recursive code with memoization i.e. DP
+{
+  // here to avoid multiple call of same function we introduced a Matrix which stores the result.
+  if(sum==0)
+  {
+    return 1;
+  }
+  if(curr==0)
+  {
+    return 0;
+  }
+
+  if(dp[curr][sum]!=-1) // if there is result available for current subproblem than simply return it instead of calculating it again.
+  {
+    return dp[curr][sum];
+  }
+
+  if(v[curr]>sum) // if the number is greater than sum than we can't include it into the subset so just skip it.
+  {
+    return isposs(v,sum,curr-1);
+  }
+
+  // if the number is not greater than we need to see both the possibilty of whether to include it or not and also remember to store the result into matrix .
+  return dp[curr][sum]=isposs(v,sum-v[curr],curr-1) || isposs(v,sum,curr-1);
+}
+
+void init_dp()
+{
+  for(int i=0;i<100;i++)
+  {
+    for(int j=0;j<100;j++)
+    {
+      dp[i][j]=-1;
+    }
+  }
+}
+
+int main()
+{
+  int n;
+  cin>>n;
+  vector<int> v(n+1); // one indexing
+  for(int i=1;i<=n;i++)
+  {
+    cin>>v[i];
+  }
+  int sum;
+  cin>>sum;
+  /*
+    //this code is for simple recursive solution
+
+  if(isposs(v,sum,n))
+  {
+    cout<<"Yes\n";
+  }
+  else
+  {
+    cout<<"NO\n";
+  }
+
+  //-------------------------------------------------------------------------------
+  */
+
+  /*
+    // this code is for recursive + memoization i.e. top-down DP
+
+  init_dp();
+  if(isposs_with_memoization(v,sum,n))
+  {
+    cout<<"Yes\n";
+  }
+  else
+  {
+   cout<<"NO\n";
+  }    
+  
+  */
+
+  return 0;
+}
