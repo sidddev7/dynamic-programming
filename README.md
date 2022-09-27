@@ -1,2 +1,2 @@
 # dynamic-programming
-this repo is for c++ dynamic programming
+this repo contains the code for dynamic programming
